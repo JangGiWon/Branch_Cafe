@@ -1,0 +1,53 @@
+<style>
+    nav {
+            margin: auto;
+            width: 70%;
+            font-weight: 700;
+        }
+    .signbox button {
+        font-weight: 700;
+    }
+</style>
+<nav class="navbar navbar-expand">
+    <a class="navbar-brand" href="{{ url_for('home.home') }}" style="color: aliceblue;">Branch Cafe</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!-- <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li> -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home.cafe_list') }}" style="color: aliceblue;">카페 찾기</a>
+            </li>
+            <li class="nav-item">
+                <!-- <a class="nav-link" href="#">Pricing</a> -->
+            </li>
+        </ul>
+        {% if session["id"] is none or session["id"] == "" %}
+            <div class="signbox d-flex">
+                <a href="{{url_for('member.member_join')}}" class="nav-link btn btn-link" style="color: aliceblue;">회원가입</a>
+                <a href="{{url_for('member.member_login')}}" class="btn btn-light">로그인</a>
+            </div>
+        {% else %}
+            <div class="signbox d-flex">
+                <a href="{{ url_for('member.member_page') }}" style="text-decoration-line: none"><div class="nav-text text-light mr-2">{{session["name"]}}님</div></a>
+                <a href="{{url_for('member.member_logout')}}" class="btn btn-light">로그아웃</a>
+            </div>
+        {% endif %}
+    </div>
+</nav>
+<hr class="w-100 mt-0" style="color: gray;">
+<div class="searchbox">
+    <div class="input-group mt-3 mb-3" style="max-width: 20%; float: right; margin-right: 16%;">
+        <form name="search_box" action="{{ url_for('home.cafe_search') }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div class="d-flex">
+                <input type="text" class="form-control" name="keyword" placeholder="" aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">검색</button>
+            </div>
+        </form>
+    </div>
+</div>
+

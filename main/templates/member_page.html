@@ -1,0 +1,58 @@
+{% extends "main.html" %}
+
+{% block contents %}
+    <div class="container" style="margin-top: 8em">
+        <div class="card mt-5" style="max-width: 100%; margin-bottom: 2em">
+            <div class="card-body">
+                <div class="d-flex card-title" style="align-items: center;">
+                    <h3 style="display: inline">{{ session.get('name') }}</h3>
+                </div>
+                <p class="card-text mt-5">아이디: {{ session.get('id') }}</p>
+            </div>
+        </div>
+        {% for review in my_review %}
+            <div class="board-cafe-info list-group list-group-flush list-group-item-action">
+                <a href="{{ url_for('board.board_view', board_id=review._id) }}" class="mb-1 post list-group-item list-group-item-action list-group-item-light">
+                    <div>
+                        <p>
+                            {{ review.title }}
+                        </p>
+                    </div>
+                    <div>
+                        <span>조회수: {{ review.view }}</span>
+                        |
+                        <span>{{ review.pubdate | formatdatetime }}</span>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+        <div class="text-center">
+            <ul class="pagination justify-content-center">
+            {% if block_start - 1 > 0 %}
+                <li class="page-item"><a class="page-link" href="{{url_for('member.member_page', page=block_start-1, search=search, keyword=keyword)}}">[이전]</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link disabled">[이전]</a></li>
+            {% endif %}
+
+            {% for i in range(block_start, block_last + 1) %}
+                {% if i > last_page %}
+                    <li class="page-item"><a class="page-link disabled">{{ i }}</a></li>
+                {% else %}
+                    {% if i == page %}
+                        <li class="page-item"><a class="page-link active text-warning">{{i}}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="{{url_for('member.member_page', page=i, search=search, keyword=keyword)}}">{{ i }}</a></li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% if block_last < last_page %}
+                <li class="page-item"><a class="page-link" href="{{url_for('member.member_page', page=block_last + 1, search=search, keyword=keyword)}}">[다음]</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link">[다음]</a></li>
+            {% endif %}
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

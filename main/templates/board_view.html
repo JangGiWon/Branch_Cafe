@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>{{ title }}</title>
+</head>
+<body>
+    {% include "bg.html" %}
+    <nav class="navbar navbar-expand">
+        <a class="navbar-brand" href="{{ url_for('home.home') }}" style="color: aliceblue;">Branch Cafe</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home.cafe_list') }}" style="color: aliceblue;">카페 찾기</a>
+                </li>
+                <li class="nav-item">
+                    <!-- <a class="nav-link" href="#">Pricing</a> -->
+                </li>
+            </ul>
+            {% if session["id"] is none or session["id"] == "" %}
+            <div class="signbox d-flex">
+                <a href="{{url_for('member.member_join')}}" class="nav-link btn btn-link" style="color: aliceblue;">회원가입</a>
+                <a href="{{url_for('member.member_login')}}" class="btn btn-light">로그인</a>
+            </div>
+            {% else %}
+            <div class="signbox d-flex">
+                <a href="{{ url_for('member.member_page') }}" style="text-decoration-line: none"><div class="nav-text text-light mr-2">{{session["name"]}}님</div></a>
+                <a href="{{url_for('member.member_logout')}}" class="btn btn-light">로그아웃</a>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+    <hr class="w-100 mt-0" style="color: gray;">
+    <div class="container">
+        <div class="card">
+            <table class="table table-borederd">
+                <tbody>
+                    <tr>
+                        <td colspan="2">{{result.title}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{result.name}}</td>
+                        <td class="text-right">{{result.pubdate | formatdatetime}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><div style="min-height:200px;">{% autoescape false %}{{result.contents}}{% endautoescape %}</div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {% if session["id"] == result.writer_id %}
+            <a class="btn btn-primary float-right ml-2" href="{{url_for('board.cafe_info', cafe_id=result.cafe_id)}}">뒤로가기</a>
+            <a class="btn btn-danger float-right ml-2" href="{{url_for('board.board_delete', board_id=result.board_id)}}">글삭제</a>
+            <a class="btn btn-warning float-right" href="{{url_for('board.board_edit', board_id=result.board_id)}}">글수정</a>
+        {% else %}
+            <a class="btn btn-primary float-right ml-2" href="{{url_for('board.cafe_info', cafe_id=result.cafe_id)}}">뒤로가기</a>
+        {% endif %}
+    </div>
+
+</body>
+</html>

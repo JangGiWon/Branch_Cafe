@@ -1,0 +1,132 @@
+{% extends 'main.html' %}
+
+{% block contents %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
+<script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+<script src="https://ssense.github.io/vue-carousel/js/vue-carousel.min.js"></script>
+
+<style>
+    .board-cafe-info {
+        border-top: 1px solid lightgrey;
+        border-bottom: 1px solid lightgray;
+    }
+</style>
+
+<div id="homeCarousel">
+    <b-row style="width: 90%; margin: auto;">
+        <b-col cols="12">
+            <b-carousel :perPage="1" controls indicators>
+                <b-carousel-slide class="p-2">
+                    <b-card-group>
+                        <b-card class="m-1" title="{{ cafes[0]['name'] }}" img-src="{{ url_for('static', filename='cafe_main_images/' + cafes[0]['name'] + '.jpg') }}" img-alt="Image" img-height="300" img-width="270" img-top>
+                            <b-card-text style="margin-bottom: 5em;"></b-card-text>
+                            <b-button href="{{ url_for('board.cafe_info', cafe_id=cafes[0]._id) }}" variant="outline-primary" style="float: right;">상세보기→</b-button>
+                        </b-card>
+                        <b-card class="m-1" title="{{ cafes[1]['name'] }}" img-src="{{ url_for('static', filename='cafe_main_images/' + cafes[1]['name'] + '.jpg') }}" img-alt="Image" img-height="300" img-width="270" img-top>
+                            <b-card-text style="margin-bottom: 5em;"></b-card-text>
+                            <b-button href="{{ url_for('board.cafe_info', cafe_id=cafes[1]._id) }}" variant="outline-primary" style="float: right;">상세보기→</b-button>
+                        </b-card>
+                    </b-card-group>
+                </b-carousel-slide>
+                <b-carousel-slide class="p-2">
+                    <b-card-group>
+                        <b-card class="m-1" title="{{ cafes[2]['name'] }}" img-src="{{ url_for('static', filename='cafe_main_images/' + cafes[2]['name'] + '.jpg') }}" img-alt="Image" img-height="300" img-width="270" img-top>
+                            <b-card-text style="margin-bottom: 5em;"></b-card-text>
+                            <b-button href="{{ url_for('board.cafe_info', cafe_id=cafes[2]._id) }}" variant="outline-primary" style="float: right;">상세보기→</b-button>
+                        </b-card>
+                        <b-card class="m-1" title="{{ cafes[3]['name'] }}" img-src="{{ url_for('static', filename='cafe_main_images/' + cafes[3]['name'] + '.jpg') }}" img-alt="Image" img-height="300" img-width="270" img-top>
+                            <b-card-text style="margin-bottom: 5em;"></b-card-text>
+                            <b-button href="{{ url_for('board.cafe_info', cafe_id=cafes[3]._id) }}" variant="outline-primary" style="float: right;">상세보기→</b-button>
+                        </b-card>
+                </b-carousel-slide>
+                <b-carousel-slide class="p-2">
+                    <b-card-group>
+                        <b-card class="m-1" title="{{ cafes[4]['name'] }}" img-src="{{ url_for('static', filename='cafe_main_images/' + cafes[4]['name'] + '.jpg') }}" img-alt="Image" img-height="300" img-width="270" img-top>
+                            <b-card-text style="margin-bottom: 5em;"></b-card-text>
+                            <b-button href="{{ url_for('board.cafe_info', cafe_id=cafes[4]._id) }}" variant="outline-primary" style="float: right;">상세보기→</b-button>
+                        </b-card>
+                        <b-card class="m-1" title="{{ cafes[5]['name'] }}" img-src="{{ url_for('static', filename='cafe_main_images/' + cafes[5]['name'] + '.jpg') }}" img-alt="Image" img-height="300" img-width="270" img-top>
+                            <b-card-text style="margin-bottom: 5em;"></b-card-text>
+                            <b-button href="{{ url_for('board.cafe_info', cafe_id=cafes[5]._id) }}" variant="outline-primary" style="float: right;">상세보기→</b-button>
+                        </b-card>
+                    </b-card-group>
+                </b-carousel-slide>
+            </b-carousel>
+        </b-col>
+    </b-row>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <div class="mb-3" style="font-weight: 700;">인기 게시글</div>
+            <div class="board-cafe-info list-group list-group-flush list-group-item-action">
+                {% for popular in popular_boards %}
+                    <a href="{{ url_for('board.board_view', board_id=popular._id) }}" class="mb-1 post list-group-item list-group-item-action list-group-item-light">
+                        {% if loop.index == 1 %}
+                            <i class="mr-1" style="font-size: 20px; font-weight: 700; text-align: center; align-self: center;">1</i>
+                        {% endif %}
+                        <div>
+                            <p>
+                                {{ popular.title }}
+                                <span style="float: right;">{{ popular.writer_id }}</span>
+                            </p>
+                        </div>
+                        <div>
+                            <span>조회수: {{ popular.view }}</span>
+                            |
+                            <span>{{ popular.pubdate | formatdatetime }}</span>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3" style="font-weight: 700;">새 게시글</div>
+            <div class="board-cafe-info list-group list-group-flush list-group-item-action">
+                {% for last in last_boards %}
+                <a href="{{ url_for('board.board_view', board_id=last._id) }}" class="mb-1 post list-group-item list-group-item-action list-group-item-light">
+                    {% if loop.index == 1 %}
+                        <i class="mr-1" style="font-size: 20px; font-weight: 700; text-align: center; align-self: center;">1</i>
+                    {% endif %}
+                    <div>
+                        <p>
+                            {{ last.title }}
+                            <span style="float: right;">{{ last.writer_id }}</span>
+                        </p>
+                    </div>
+                    <div>
+                        <span>조회수: {{ last.view }}</span>
+                        |
+                        <span>{{ last.pubdate | formatdatetime }}</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const homeCarousel = new Vue ({
+        el: "#homeCarousel",
+        components: {
+            'b-carousel': VueCarousel.Carousel,
+            'b-carousel-slide': VueCarousel.Slide
+        },
+        data: {
+            slide: 1,
+            sliding: null
+        },
+        methods: {
+            onSlideStart(slide) {
+                this.sliding = true
+            },
+            onSlideEnd(slide) {
+                this.sliding = false
+            },
+        },
+    });
+</script>
+
+{% endblock %}

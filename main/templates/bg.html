@@ -1,0 +1,24 @@
+<style>
+        .bg{
+            background-image: url("{{url_for('static', filename='background_image/bg.jpg')}}");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            position: absolute;
+            z-index: -1;
+            height: 70%;
+            width: 100%;
+        }
+        .bg::before {
+            content: "";
+            opacity: 0.65;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            background-color: #000;
+        }
+</style>
+
+<div class="bg"></div>
